@@ -2,8 +2,8 @@
 $ftpBase = "ftp://ftp.ak2.ba/ak2Novo/"
 $files = @("cfg.rar", "lib.rar", "rpt.rar", "dba.rar")
 $destinationFolder = "C:\transfer"
-$username = "gg@ak2.ba"
-$password = "pass"
+$username = "gost@ak2.ba"
+$password = "avz123pak456"
 
 # Create WebClient and set credentials
 $webclient = New-Object System.Net.WebClient
@@ -22,7 +22,7 @@ foreach ($file in $files) {
     $webclient.DownloadFile($ftpFile, $localFile)
 }
 
-Write-Host "✅ All files downloaded successfully!"
+Write-Host "Sve stavke su uspješno raspakirane"
 
 # Extraction targets
 $extractTargets = @{
@@ -50,17 +50,17 @@ $mode = ""
 if (Test-Path $unrarPath) {
     $extractor = $unrarPath
     $mode = "winrar"
-    Write-Host "🧰 Using WinRAR for extraction..."
+    Write-Host "Koristim WinRAR za raspakiravanje..."
 } elseif (Test-Path $sevenZipPath64) {
     $extractor = $sevenZipPath64
     $mode = "7zip"
-    Write-Host "🧰 Using 7-Zip (64-bit) for extraction..."
+    Write-Host "Koristim 7zip za raspakiravanje..."
 } elseif (Test-Path $sevenZipPath32) {
     $extractor = $sevenZipPath32
     $mode = "7zip"
-    Write-Host "🧰 Using 7-Zip (32-bit) for extraction..."
+    Write-Host "Koristim 7 zip za raspakiravanje..."
 } else {
-    Write-Error "❌ Neither WinRAR nor 7-Zip found. Cannot extract files."
+    Write-Error "Nemam ni 7Zip ni WinRAR, ne mogu raspakirati stavke."
     exit 1
 }
 
@@ -69,7 +69,7 @@ foreach ($file in $files) {
     $sourceRar = Join-Path $destinationFolder $file
     if ($extractTargets.ContainsKey($file)) {
         $targetFolder = $extractTargets[$file]
-        Write-Host "📦 Extracting $file to $targetFolder..."
+        Write-Host "Extracting $file to $targetFolder..."
         
         if ($mode -eq "winrar") {
             & "$extractor" x -o+ "$sourceRar" "$targetFolder" | Out-Null
@@ -79,4 +79,4 @@ foreach ($file in $files) {
     }
 }
 
-Write-Host "🎉 All RAR files extracted successfully!"
+Write-Host "Sve su stavke uspješno raspakirane"

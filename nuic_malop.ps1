@@ -18,7 +18,7 @@ if (!(Test-Path -Path $destinationFolder)) {
 foreach ($file in $files) {
     $ftpFile = $ftpBase + $file
     $localFile = Join-Path $destinationFolder $file
-    Write-Host "⬇️ Downloading $ftpFile to $localFile..."
+    Write-Host "Downloading $ftpFile to $localFile..."
     $webclient.DownloadFile($ftpFile, $localFile)
 }
 

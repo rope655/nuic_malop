@@ -22,7 +22,7 @@ foreach ($file in $files) {
     $webclient.DownloadFile($ftpFile, $localFile)
 }
 
-Write-Host "Sve stavke su uspješno raspakirane"
+Write-Host "Sve stavke su uspjesno raspakirane"
 
 # Extraction targets
 $extractTargets = @{
@@ -79,4 +79,15 @@ foreach ($file in $files) {
     }
 }
 
-Write-Host "Sve su stavke uspješno raspakirane"
+Write-Host "Sve su stavke uspjesno raspakirane."
+Write-Host "ZADATAK OBAVLJEN IZVRSNO!"
+
+
+$chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+$imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1EOsN1s--tHB53Gbk5jYyJR0oADeAbceGgQ&s"
+
+if (Test-Path $chromePath) {
+    Start-Process -FilePath $chromePath -ArgumentList $imageUrl
+} else {
+    Write-Warning "Google Chrome nije pronađen na očekivanoj lokaciji: $chromePath"
+}

@@ -22,7 +22,7 @@ foreach ($file in $files) {
     $webclient.DownloadFile($ftpFile, $localFile)
 }
 
-Write-Host "Sve stavke su uspjesno raspakirane"
+Write-Host "Sve stavke su uspjesno preuzete."
 
 # Extraction targets
 $extractTargets = @{
@@ -54,11 +54,11 @@ if (Test-Path $unrarPath) {
 } elseif (Test-Path $sevenZipPath64) {
     $extractor = $sevenZipPath64
     $mode = "7zip"
-    Write-Host "Koristim 7zip za raspakiravanje..."
+    Write-Host "Koristim 7zip (64-bit) za raspakiravanje..."
 } elseif (Test-Path $sevenZipPath32) {
     $extractor = $sevenZipPath32
     $mode = "7zip"
-    Write-Host "Koristim 7 zip za raspakiravanje..."
+    Write-Host "Koristim 7zip (32-bit) za raspakiravanje..."
 } else {
     Write-Error "Nemam ni 7Zip ni WinRAR, ne mogu raspakirati stavke."
     exit 1
@@ -82,12 +82,24 @@ foreach ($file in $files) {
 Write-Host "Sve su stavke uspjesno raspakirane."
 Write-Host "ZADATAK OBAVLJEN IZVRSNO!"
 
-
-$chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+# Otvaranje linka u Chrome (provjera x64 i x86 verzije)
 $imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1EOsN1s--tHB53Gbk5jYyJR0oADeAbceGgQ&s"
 
-if (Test-Path $chromePath) {
-    Start-Process -FilePath $chromePath -ArgumentList $imageUrl
-} else {
-    Write-Warning "Google Chrome nije pronađen na očekivanoj lokaciji: $chromePath"
+$chromePaths = @(
+    "C:\Program Files\Google\Chrome\Application\chrome.exe",
+    "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+)
+
+$chromeFound = $false
+foreach ($path in $chromePaths) {
+    if (Test-Path $path) {
+        Start-Process -FilePath $path -ArgumentList $imageUrl
+        $chromeFound = $true
+        break
+    }
 }
+
+if (-not $chromeFound) {
+    Write-Warning "Google Chrome nije pronađen ni na jednoj od očekivanih lokacija."
+}
+
